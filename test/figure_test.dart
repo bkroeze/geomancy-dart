@@ -9,10 +9,18 @@ void main() {
       expect(v1.flags, '1111');
     });
 
+    test('.byName throws', () {
+      expect(() => Figure.byName('foo'), throwsRangeError);
+    });
+
     test('.byFlags()', () {
       var v1 = Figure.byName('populus');
       expect(v1.name, 'Populus');
       expect(v1.flags, '0000');
+    });
+
+    test('.byFlags throws', () {
+      expect(() => Figure.byFlags('foo'), throwsRangeError);
     });
 
     test('.byElements()', () {
@@ -79,6 +87,11 @@ void main() {
       expect(fmajor.add(via), fminor);
     });
 
+    test('should render to JSON', () {
+      var fmajor = Figure.byName('fortuna major');
+      expect(fmajor.toJSON(), '{"name":"Fortuna Major","english":"Greater Fortune","flags":"1100","houses":{"strong":4,"weak":10}}');
+    });
+
     test('should calculate its point count', () {
       var puer = Figure.byName('puer');
       var via = Figure.byName('Via');
@@ -110,5 +123,6 @@ void main() {
       var puer = Figure.byName('puer');
       expect(puer.toTextFigure(), ' * \n * \n* *\n * ');
     });
+
   });
 }

@@ -41,7 +41,6 @@ class Figure {
     if (figures.containsKey(key)) {
       return figures[key];
     }
-    print(figures);
     throw new RangeError('Figure Not Found: $name');
   }
 
