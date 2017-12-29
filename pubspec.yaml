@@ -1,0 +1,19 @@
+name: geomancy_dart
+description: A sample command-line application.
+version: 0.0.1
+#homepage: https://www.example.com
+#author: Bruce Kroeze <email@example.com>
+
+environment:
+  sdk: '>=1.20.1 <2.0.0'
+
+dependencies:
+  dartson: "^0.2.7"
+#  path: ^1.4.1
+
+dev_dependencies:
+  coverage: ^0.8.0 # dart_dev is currently untested with coverage ^0.9.0
+  dart_dev: ^1.7.8
+  dart_style: ^1.0.0
+  dartdoc: 
+  test: ^0.12.24
