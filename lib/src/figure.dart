@@ -24,9 +24,14 @@ const List<List<String>> COMPANY_COMPOUND = const [
 /// A Geomantic Figure
 class Figure {
   Map _details;
+
+  /// Earth element
   bool earth;
+  /// Water element
   bool water;
+  /// Air element
   bool air;
+  /// Fire element
   bool fire;
 
   /// Construct [Figure] using [flags] a 4 character string of 0 or 1, with 1 meaning passive
@@ -66,7 +71,7 @@ class Figure {
     return Figure.byFlags(flags);
   }
 
-  /// Get the associated details for the figure.
+  /// Get the associated [details] map for the figure.
   Map get details {
     if (_details == null) {
       var figureDetails = _getFigureDetails();
@@ -91,6 +96,7 @@ class Figure {
     );
   }
 
+  /// Sets the [flags] of this figure
   void set flags (String raw) {
     String work = raw;
     while(work.length < 4) {
@@ -104,18 +110,22 @@ class Figure {
     this.fire = work[3] == '1';
   }
 
+  /// returns the figure name
   String get name {
     return details['name'];
   }
 
+  /// returns the parsed integer value of the [flags]
   int get number {
     return int.parse(flags);
   }
 
+  /// gets the slugified [name]
   String get slug {
     return slugify(name);
   }
 
+  /// tests equality
   bool equals (Figure other) {
     if (other == null) {
       return false;
@@ -123,6 +133,7 @@ class Figure {
     return other.flags == flags;
   }
 
+  /// returns company type of this with [other]
   String getCompanyType (Figure other) {
     if (other.equals(this)) {
       return 'simple';
@@ -150,20 +161,24 @@ class Figure {
     return '';
   }
 
+  /// Gets an elemental "line" by [ix]
   bool getLine (ix) {
     List<bool> elements = [fire, air, water, earth];
     RangeError.checkValidIndex(ix, elements);
     return elements[ix];
   }
 
+  /// Returns the count of active points
   int getActivePoints () {
     return (fire ? 1 : 0) + (air ? 1 : 0) + (water ? 1 : 0) + (earth ? 1 : 0);
   }
 
+  /// Returns the total number of "dots"
   int getPoints () {
     return (fire ? 1 : 2) + (air ? 1 : 2) + (water ? 1 : 2) + (earth ? 1 : 2);
   }
 
+  /// Returns the relative strength of this figure in [house]
   int getStrength (house) {
     int shouldBeStrong = 0;
     if (details['houses']['strong'] == house) shouldBeStrong++;
@@ -171,6 +186,7 @@ class Figure {
     return shouldBeStrong;
   }
 
+  /// Returns the new figure made by adding [other]
   Figure add (Figure other) {
     String computed = (
       zero1(xor(earth, other.earth)) +
@@ -181,11 +197,13 @@ class Figure {
     return Figure.byFlags(computed);
   }
 
+  /// Returns the JSON of the construction [details] of this figure.
   String toJSON () {
     var dson = new Dartson.JSON();
     return dson.encode(details);
   }
 
+  /// Returns a string representation using the specified [letter], padding to [width]
   String toTextFigure ({String letter: '*', int width: 3}) {
     lineToText(element) {
       String work = element ? letter : '${letter} ${letter}';
@@ -207,7 +225,7 @@ Map<String, Figure> _figures = new Map();
 
 Map<String, Map> _figureDetails = new Map();
 
-makeFigures() {
+_makeFigures() {
   // note that the houses are in zero-index order
   List<Map> figureDefs = [
     {
@@ -302,14 +320,14 @@ makeFigures() {
 
 Map<String, Figure> _getFigures() {
   if (_figures.isEmpty) {
-    makeFigures();
+    _makeFigures();
   }
   return _figures;
 }
 
 Map<String, Map> _getFigureDetails() {
   if (_figureDetails.isEmpty) {
-    makeFigures();
+    _makeFigures();
   }
   return _figureDetails;
 }
